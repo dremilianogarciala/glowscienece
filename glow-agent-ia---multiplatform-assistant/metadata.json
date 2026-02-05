@@ -1,0 +1,9 @@
+
+{
+  "name": "Glow Agent IA - Multiplatform Assistant",
+  "description": "A world-class AI agent platform for multi-platform scheduling, automated FAQs, and high-fidelity image generation using Gemini 3 Pro.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
