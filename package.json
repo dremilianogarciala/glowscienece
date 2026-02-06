@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "backend:dev": "node --watch backend/src/index.js",
+    "backend:start": "node backend/src/index.js",
+    "test": "node --test backend/tests/*.test.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "lucide-react": "^0.563.0",
