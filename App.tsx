@@ -16,8 +16,7 @@ import GuidedTutorial from './components/GuidedTutorial';
 import { AppView, AIAgent, ChannelConfig, UnifiedMessage, Appointment, MarketingAsset } from './types';
 import { Settings, Bell, Search, UserCircle, Phone, Instagram, MessageCircle, Moon, Sun, HelpCircle } from 'lucide-react';
 
-const BACKEND_PORT = 3001;
-const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
@@ -77,6 +76,47 @@ const App: React.FC = () => {
   ]);
 
   const [marketingAssets, setMarketingAssets] = useState<MarketingAsset[]>([]);
+
+
+  useEffect(() => {
+    let isMounted = true;
+    let es: EventSource | null = null;
+
+    const bootstrap = async () => {
+      try {
+        const health = await fetch(`${BACKEND_URL}/healthz`);
+        if (!isMounted) return;
+        setBackendConnected(health.ok);
+
+        const initial = await fetch(`${BACKEND_URL}/api/messages`);
+        const payload = await initial.json();
+        if (Array.isArray(payload) && isMounted) {
+          setInboxMessages(payload.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) })));
+        }
+
+        es = new EventSource(`${BACKEND_URL}/api/events`);
+        es.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data?.type === 'connected') return;
+            setInboxMessages((prev) => [{ ...data, timestamp: new Date(data.timestamp) }, ...prev]);
+          } catch {
+            // noop
+          }
+        };
+        es.onerror = () => setBackendConnected(false);
+      } catch {
+        if (isMounted) setBackendConnected(false);
+      }
+    };
+
+    bootstrap();
+
+    return () => {
+      isMounted = false;
+      if (es) es.close();
+    };
+  }, []);
 
   useEffect(() => {
     const checkApiKey = async () => {
