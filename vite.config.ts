@@ -6,8 +6,18 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
       server: {
-        port: 3000,
+        port: 5000,
         host: '0.0.0.0',
+        proxy: {
+          '/api': {
+            target: 'http://127.0.0.1:3001',
+            changeOrigin: true,
+          },
+          '/healthz': {
+            target: 'http://127.0.0.1:3001',
+            changeOrigin: true,
+          },
+        },
       },
       plugins: [react()],
       define: {

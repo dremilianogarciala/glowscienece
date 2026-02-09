@@ -70,7 +70,7 @@ export function createServer() {
     if (handleCors(req, res)) return;
 
     if (req.method === 'GET' && url.pathname === '/healthz') {
-      return json(res, 200, { ok: true });
+      return json(res, 200, { status: 'ok' });
     }
 
     if (req.method === 'GET' && url.pathname === '/api/messages') {

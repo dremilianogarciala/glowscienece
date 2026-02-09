@@ -16,7 +16,7 @@ import GuidedTutorial from './components/GuidedTutorial';
 import { AppView, AIAgent, ChannelConfig, UnifiedMessage, Appointment, MarketingAsset } from './types';
 import { Settings, Bell, Search, UserCircle, Phone, Instagram, MessageCircle, Moon, Sun, HelpCircle } from 'lucide-react';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
