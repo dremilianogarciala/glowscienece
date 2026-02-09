@@ -1,5 +1,5 @@
 export const config = {
-  port: Number(process.env.BACKEND_PORT || 3001),
+  port: Number(process.env.PORT || process.env.BACKEND_PORT || 3001),
   metaVerifyToken: process.env.META_VERIFY_TOKEN || '',
   metaAppSecret: process.env.META_APP_SECRET || '',
   metaAccessToken: process.env.META_ACCESS_TOKEN || '',

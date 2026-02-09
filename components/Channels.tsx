@@ -22,7 +22,7 @@ const Channels: React.FC<ChannelsProps> = ({ channels, setChannels }) => {
   const [tokenTouched, setTokenTouched] = useState(false);
   
   // Webhook URL pointing to our local server port 3001
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
   const webhookUrl = `${backendUrl}/api/webhook`;
 
   const getIcon = (id: string) => {
