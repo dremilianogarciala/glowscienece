@@ -21,9 +21,10 @@ const Channels: React.FC<ChannelsProps> = ({ channels, setChannels }) => {
   const [webhookToken, setWebhookToken] = useState('');
   const [tokenTouched, setTokenTouched] = useState(false);
   
-  // Webhook URL pointing to our local server port 3001
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
-  const webhookUrl = `${backendUrl}/api/webhook`;
+  const devBackendUrl = (import.meta.env.VITE_BACKEND_URL || '').trim();
+  const useDevLocalBackend = /localhost|127\.0\.0\.1/i.test(devBackendUrl);
+  const callbackBase = useDevLocalBackend ? devBackendUrl.replace(/\/$/, '') : window.location.origin;
+  const callbackUrl = `${callbackBase}/api/webhook`;
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -97,7 +98,7 @@ const Channels: React.FC<ChannelsProps> = ({ channels, setChannels }) => {
             return;
         }
         credentials.webhookVerifyToken = webhookToken.trim();
-        credentials.webhookCallbackUrl = webhookUrl;
+        credentials.webhookCallbackUrl = callbackUrl;
     }
 
     setChannels(prev => prev.map(c => {
@@ -207,17 +208,17 @@ const Channels: React.FC<ChannelsProps> = ({ channels, setChannels }) => {
                     <div className="flex gap-2">
                         <input 
                             readOnly
-                            value={webhookUrl}
+                            value={callbackUrl}
                             className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl p-3 text-sm font-mono text-slate-600 dark:text-slate-300 outline-none"
                         />
                         <button 
-                             onClick={() => { navigator.clipboard.writeText(webhookUrl); alert('Copiado!'); }}
+                             onClick={() => { navigator.clipboard.writeText(callbackUrl); alert('Copiado!'); }}
                              className="p-3 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-500 dark:text-slate-300"
                         >
                             <Copy className="w-5 h-5" />
                         </button>
                     </div>
-                    <p className="text-[10px] text-slate-400 mt-1">Copia esto en el campo "Webhook URL" de Meta.</p>
+                    <p className="text-[10px] text-slate-400 mt-1">Copia esto en Meta Developers {'>'} Webhooks.</p>
                 </div>
 
                 <div>
