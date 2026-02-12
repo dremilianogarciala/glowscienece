@@ -1,0 +1,8 @@
+entrypoint = "backend/src/index.js"
+modules = ["nodejs-20"]
+run = "npm run start"
+
+[deployment]
+build = ["npm", "install"]
+run = ["npm", "run", "start"]
+deploymentTarget = "autoscale"

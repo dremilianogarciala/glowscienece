@@ -11,6 +11,8 @@ test('health and messages endpoints respond', async () => {
 
   const health = await fetch(`http://127.0.0.1:${port}/healthz`);
   assert.equal(health.status, 200);
+  const healthBody = await health.json();
+  assert.equal(healthBody.status, 'ok');
 
   const msgs = await fetch(`http://127.0.0.1:${port}/api/messages`);
   assert.equal(msgs.status, 200);
