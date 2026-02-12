@@ -1,8 +1,7 @@
-entrypoint = "backend/src/index.js"
-modules = ["nodejs-20"]
 run = "npm run start"
 
+[nix]
+channel = "stable-24_05"
+
 [deployment]
-build = ["npm", "install"]
-run = ["npm", "run", "start"]
-deploymentTarget = "autoscale"
+run = ["sh", "-c", "npm run start"]
